@@ -8,8 +8,13 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_NAME:', process.env.DB_NAME);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'database',
   user: process.env.DB_USER || 'recipe',
   password: process.env.DB_PASSWORD || 'recipe123',
   database: process.env.DB_NAME || 'recipeapp',
