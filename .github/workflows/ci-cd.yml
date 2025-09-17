@@ -7,8 +7,8 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_REPO_FRONTEND: <stamenovaklaudija>/recipes-frontend
-  DOCKER_REPO_BACKEND: <stamenovaklaudija>/recipes-backend
+  DOCKER_REPO_FRONTEND: stamenovaklaudija/recipes-frontend
+  DOCKER_REPO_BACKEND: stamenovaklaudija/recipes-backend
 
 jobs:
   test:
