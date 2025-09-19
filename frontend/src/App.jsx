@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || '/api';
+
 function App() {
     const [recipes, setRecipes] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -85,9 +87,9 @@ function App() {
     };
 
     const fetchRecipes = (category = '', ingredients = []) => {
-        let url = 'http://localhost:5000/api/recipes';
+        let url = `${API_BASE_URL}/recipes`;
         if (category) url += `?category=${category}`;
-        if (ingredients.length > 0) url += `&ingredient=${ingredients.join(',')}`;
+        if (ingredients.length > 0) url += `${category ? '&' : '?'}ingredient=${ingredients.join(',')}`;
 
         fetch(url)
             .then(res => res.json())
@@ -96,7 +98,7 @@ function App() {
     };
 
     const fetchIngredients = () => {
-        fetch('http://localhost:5000/api/recipes/ingredients')
+        fetch(`${API_BASE_URL}/recipes/ingredients`)
             .then(res => res.json())
             .then(data => setAllIngredients(data))
             .catch(err => console.error('Error fetching ingredients:', err));
@@ -110,10 +112,9 @@ function App() {
 
     const deleteRecipe = (id) => {
         if (window.confirm('Дали сте сигурни дека сакате да го избришете овој рецепт?')) {
-            fetch(`http://localhost:5000/api/recipes/${id}`, { method: 'DELETE' })
+            fetch(`${API_BASE_URL}/recipes/${id}`, { method: 'DELETE' })
                 .then(() => {
                     fetchRecipes(selectedCategory, selectedIngredients);
-                    // Отстранете го рецептот и од омилени ако постои
                     const updatedFavorites = favorites.filter(f => f.id !== id);
                     if (updatedFavorites.length !== favorites.length) {
                         setFavorites(updatedFavorites);
@@ -203,7 +204,7 @@ function App() {
             category: selectedCategory
         };
 
-        fetch('http://localhost:5000/api/recipes', {
+        fetch(`${API_BASE_URL}/recipes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(recipeWithCategory)
